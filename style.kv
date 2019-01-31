@@ -1,0 +1,96 @@
+#: import FadeTransition kivy.uix.screenmanager.FadeTransition
+UserScreenManager:
+    transition: FadeTransition()
+    NavScreen:
+    NewUser:
+    ExistingUser:
+    HomePage:
+
+<NavScreen>:
+    name: 'NavScreen'
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: '2.jpg'
+    FloatLayout:
+        Button:
+            on_release: app.root.current = 'NewUser'
+            size_hint: 0.3, 0.1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.7}
+            text: 'New User'
+            font_size: 0.6*self.height
+        Button:
+            on_press: root.manager.current = 'ExistingUser'
+            size_hint: 0.3, 0.1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.4}
+            text: 'Exisiting User?'
+            font_size: 0.6*self.height
+
+<NewUser>:
+    name: 'NewUser'
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: '3.jpg'
+    Label:
+        text: 'You have arrived at the new user\'s page'
+    Button:
+        pos_hint: {'center_x': 0.5, 'center_y': 0.1}
+        on_press: root.manager.current = 'NavScreen'
+        size_hint: 0.1, 0.1
+        Image:
+            source: '1.png'
+            center_x: self.parent.center_x
+            center_y: self.parent.center_y
+
+
+<ExistingUser>:
+    name: 'ExistingUser'
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: '4.jpg'
+    FloatLayout:
+        Label: 
+            text: 'Patient ID'
+            size_hint: 0.3, 0.1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.9}
+            font_size: 0.6*self.height
+        TextInput:
+            multiline: False
+            size_hint: 0.3, 0.1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.8}
+            font_size: 0.6*self.height
+        Label: 
+            text: 'Unique PIN'
+            size_hint: 0.3, 0.1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.6}
+            font_size: 0.6*self.height
+        TextInput:
+            multiline: False
+            password: True
+            size_hint: 0.3, 0.1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+            font_size: 0.6*self.height
+        Button:
+            id: 'logIn'
+            text: 'LOG IN'
+            size_hint: 0.3, 0.1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.3}
+            font_size: 0.6*self.height
+            on_press: root.manager.current = 'HomePage'
+        Button:
+            pos_hint: {'center_x': 0.5, 'center_y': 0.1}
+            on_press: root.manager.current = 'NavScreen'
+            size_hint: 0.1, 0.1
+            Image:
+                source: '1.png'
+                center_x: self.parent.center_x
+                center_y: self.parent.center_y
+
+<HomePage>:
+    name:'HomePage'
+            
