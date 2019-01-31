@@ -6,6 +6,7 @@ from kivy.uix.label import Label
 from kivy.uix.screenmanager import Screen, ScreenManager, FadeTransition
 from kivy.lang import Builder
 from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.textinput import TextInput
 
 class NavScreen(Screen):
     pass
@@ -14,11 +15,22 @@ class NewUser(Screen):
     pass
 
 class ExistingUser(Screen):
-    pass
+    def __init__(self, **kwargs):
+        super(ExistingUser, self).__init__(**kwargs)
+    
+    def sendId(self, id, pin):
+        print(id+' '+pin)
+
 
 class HomePage(Screen):
-    pass
+    def __init__(self, **kwargs):
+        super(HomePage, self).__init__(**kwargs)
 
+    
+    
+
+
+    
 class UserScreenManager(ScreenManager):
     pass
 
