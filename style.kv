@@ -24,12 +24,15 @@ UserScreenManager:
             pos_hint: {'center_x': 0.5, 'center_y': 0.7}
             text: 'New User'
             font_size: 0.5*self.height
+            background_color: (0.5,0.5,0.9,0.3)
+
         Button:
             on_press: root.manager.current = 'ExistingUser'
             size_hint: 0.3, 0.1
             pos_hint: {'center_x': 0.5, 'center_y': 0.4}
             text: 'Exisiting User?'
             font_size: 0.5*self.height
+            background_color: (0.5,0.5,0.9,0.3)
 
 <NewUser>:
     name: 'NewUser'
@@ -111,6 +114,7 @@ UserScreenManager:
             pos_hint: {'center_x': 0.5, 'center_y': 0.1}
             on_press: root.manager.current = 'NavScreen'
             size_hint: 0.05, 0.04
+            background_color: (1,1,1,0.5)
             Image:
                 source: '1.png'
                 center_x: self.parent.center_x
