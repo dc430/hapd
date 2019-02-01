@@ -6,6 +6,16 @@ from kivy.lang import Builder
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.textinput import TextInput
 
+#For heroku
+from kivy.network.urlrequest import UrlRequest
+import urllib
+import requests
+import json
+def bug_posted(req, result):
+    print('Our bug is posted!')
+    print(result)
+
+
 class NavScreen(Screen):
     pass
 
@@ -19,23 +29,24 @@ class ExistingUser(Screen):
     def sendId(self, id, pin):
         print(id+' '+pin)
 
-
+class api(Screen):
+    def __init__(self, **kwargs):
+        super(api, self).__init__(**kwargs)
+        self.gender = None
+    def sendDataToRealTimeDb(self, name, age, dob, pin):
+        data = {'name': name, 'age': age, 'gender': self.gender, 'dob': dob, 'pin': pin}
+        data = json.dumps(data)
+        headers = {'Authorization' : '', 'Accept' : 'application/json', 'Content-Type' : 'application/json'}
+        url = 'https://hapdwebhook.herokuapp.com/webhook'
+        r = requests.post(url, data=data, headers=headers)
+        #r.text contains the dictionary/json file with the response from webhook
+        print(r.text)
+    
 class HomePage(Screen):
     def __init__(self, **kwargs):
         super(HomePage, self).__init__(**kwargs)
-    
+        
 
-class firebase(Screen):
-    def __init__(self, **kwargs):
-        super(firebase, self).__init__(**kwargs)
-        self.gender = None
-    def sendDataToRealTimeDb(self, name, age, dob, pin):
-        #start writing here - poojitha
-        #access gender by self.gender and others just by using there name.
-        #delete pass when adding the code.
-        pass
-
-    
     
 
 

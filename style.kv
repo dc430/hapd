@@ -7,8 +7,10 @@ UserScreenManager:
         id: euser
     HomePage:
         id: homepage
-    firebase:
-        id: firebase
+    api:
+        id: api
+
+#####################################################    NAVIGATION SCREEN     ########################################################buildoze
 
 #####################################################    NAVIGATION SCREEN     ########################################################
 
@@ -69,6 +71,7 @@ UserScreenManager:
             multiline: False
             pos_hint: {'center_x': 0.5, 'center_y': 0.7}
             font_size: 0.4*self.height
+            
         GridLayout:
             cols: 2
             spacing: '8dp'
@@ -77,13 +80,13 @@ UserScreenManager:
             height: self.minimum_height
             ToggleButton:
                 size_hint_y: None
-                on_press: app.root.ids.firebase.gender = 'Male'
+                on_press: app.root.ids.api.gender = 'Male'
                 height: '30dp'
                 text: 'Male'
                 group: 'g1'
             ToggleButton:
                 size_hint_y: None
-                on_press: app.root.ids.firebase.gender = 'Female'
+                on_press: app.root.ids.api.gender = 'Female'
                 height: '30dp'
                 text: 'Female'
                 group: 'g1'
@@ -111,7 +114,7 @@ UserScreenManager:
             size_hint: 0.3, 0.1  
             pos_hint: {'center_x': 0.5, 'center_y': 0.3}  
             font_size: 0.4*self.height
-            on_press: app.root.ids.firebase.sendDataToRealTimeDb(name_newUser.text, age_newUser.text, dob_newUser.text, pin_newUser.text)
+            on_press: app.root.ids.api.sendDataToRealTimeDb(name_newUser.text, age_newUser.text, dob_newUser.text, pin_newUser.text)
             on_release: root.manager.current = 'HomePage'
 
         Button:
