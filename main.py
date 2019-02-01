@@ -33,8 +33,9 @@ class firebase(Screen):
         self.gender = None
     def sendDataToRealTimeDb(self, name, age, dob, pin):
         #start writing here - poojitha
-        print(name, age, dob, pin, self.gender)
-
+        #access gender by self.gender and others just by using there name.
+        #delete pass when adding the code.
+        pass
 
     
     
