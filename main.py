@@ -25,6 +25,16 @@ class ExistingUser(Screen):
 class HomePage(Screen):
     def __init__(self, **kwargs):
         super(HomePage, self).__init__(**kwargs)
+    
+
+class firebase(Screen):
+    def __init__(self, **kwargs):
+        super(firebase, self).__init__(**kwargs)
+        self.gender = None
+    def sendDataToRealTimeDb(self, name, age, dob, pin):
+        #start writing here - poojitha
+        print(name, age, dob, pin, self.gender)
+
 
     
     

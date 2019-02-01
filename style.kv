@@ -4,8 +4,11 @@ UserScreenManager:
     NavScreen:
     NewUser:
     ExistingUser:
-        id: 'euser'
+        id: euser
     HomePage:
+        id: homepage
+    firebase:
+        id: firebase
 
 <NavScreen>:
     name: 'NavScreen'
@@ -34,7 +37,7 @@ UserScreenManager:
         Rectangle:
             pos: self.pos
             size: self.size
-            source: '3.jpg'
+            source: '4.jpg'
     
     FloatLayout:
 
@@ -47,7 +50,7 @@ UserScreenManager:
         TextInput:
             id: name_newUser
             hint_text: 'Name'
-            size_hint: 0.3, 0.1
+            size_hint: 0.3, 0.06
             multiline: False
             pos_hint: {'center_x': 0.5, 'center_y': 0.8}
             font_size: 0.4*self.height
@@ -55,23 +58,25 @@ UserScreenManager:
         TextInput:
             id: age_newUser
             hint_text: 'Age'
-            size_hint: 0.3, 0.1
+            size_hint: 0.3, 0.06
             multiline: False
             pos_hint: {'center_x': 0.5, 'center_y': 0.7}
             font_size: 0.4*self.height
         GridLayout:
             cols: 2
             spacing: '8dp'
-            size_hint: .5, None
+            size_hint: .3, None
             pos_hint: {'center_x': 0.5, 'center_y': 0.6}
             height: self.minimum_height
             ToggleButton:
                 size_hint_y: None
+                on_press: app.root.ids.firebase.gender = 'Male'
                 height: '30dp'
                 text: 'Male'
                 group: 'g1'
             ToggleButton:
                 size_hint_y: None
+                on_press: app.root.ids.firebase.gender = 'Female'
                 height: '30dp'
                 text: 'Female'
                 group: 'g1'
@@ -79,9 +84,19 @@ UserScreenManager:
         TextInput:
             id: dob_newUser
             hint_text: 'Date of Birth'
-            size_hint: 0.3, 0.1
+            size_hint: 0.3, 0.06
             multiline: False
             pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+            font_size: 0.4*self.height
+
+        TextInput:
+            id: pin_newUser
+            hint_text: 'PIN'
+            allow_copy: False
+            size_hint: 0.3, 0.06
+            password: True
+            multiline: False
+            pos_hint: {'center_x': 0.5, 'center_y': 0.4}
             font_size: 0.4*self.height
 
         Button:
@@ -89,11 +104,13 @@ UserScreenManager:
             size_hint: 0.3, 0.1  
             pos_hint: {'center_x': 0.5, 'center_y': 0.3}  
             font_size: 0.4*self.height
+            on_press: app.root.ids.firebase.sendDataToRealTimeDb(name_newUser.text, age_newUser.text, dob_newUser.text, pin_newUser.text)
+            on_release: root.manager.current = 'HomePage'
 
         Button:
             pos_hint: {'center_x': 0.5, 'center_y': 0.1}
             on_press: root.manager.current = 'NavScreen'
-            size_hint: 0.1, 0.1
+            size_hint: 0.05, 0.04
             Image:
                 source: '1.png'
                 center_x: self.parent.center_x
@@ -145,7 +162,8 @@ UserScreenManager:
             size_hint: 0.3, 0.1
             pos_hint: {'center_x': 0.5, 'center_y': 0.3}
             font_size: 0.6*self.height
-            on_press: root.sendId(pId.text, pin.text)
+            #on_press: root.sendId(pId.text, pin.text)
+            on_release: app.root.manager.current = 'HomePage'
 
         Button:
             pos_hint: {'center_x': 0.5, 'center_y': 0.1}
@@ -160,6 +178,15 @@ UserScreenManager:
 <HomePage>:
     name:'HomePage'
     Label:
+        text: 'You are now on the Home page.'
+    Button:
+        pos_hint: {'center_x': 0.5, 'center_y': 0.1}
+        on_press: root.manager.current = 'NavScreen'
+        size_hint: 0.1, 0.1
+        Image:
+            source: '1.png'
+            center_x: self.parent.center_x
+            center_y: self.parent.center_y
 
 
 
