@@ -41,14 +41,18 @@ class NewUser(Screen):
         self.nE = name_error
         self.pE = pin_error
         self.aE = age_error
+        self.dE = dob_error
+        self.gE = gender_error
+        self.temp = str('Hello')
 
-    ErrorAge = StringProperty('')
-    erAge = ObjectProperty()
     def update_status(self):
         self.status = status
         self.nE = name_error
         self.pE = pin_error
         self.aE = age_error
+        self.dE = dob_error
+        self.gE = gender_error
+
 
 class ExistingUser(Screen):
     def __init__(self, **kwargs):
@@ -63,29 +67,40 @@ class api(Screen):
         self.gender = None
         
     def sendDataToRealTimeDb(self, name, age, dob, pin):
-        global active, status, age_error, name_error, pin_error
+        global active, status, age_error, name_error, pin_error, dob_error, gender_error
+        age_error = name_error = pin_error = 0
+        status = 1
         active = 1
         temp = str(age)
         if (temp.isnumeric() == False):
             age_error = 1
             status = 0
-        if (name == None):
+        if (str(age) == ''):
+            age_error = 2
+            status = 0
+        if (str(name) == ''):
             name_error = 2
             status = 0
-        if(len(str(pin)) < 6):
+        if(len(str(pin)) > 4 or len(str(pin)) < 4):
             pin_error = 1
             status = 0
-        if(pin == None):
+        if(str(pin) == ''):
             pin_error = 2
             status = 0
-
-        data = {'name': name, 'age': age, 'gender': self.gender, 'dob': dob, 'pin': pin}
-        data = json.dumps(data)
-        headers = {'Authorization' : '', 'Accept' : 'application/json', 'Content-Type' : 'application/json'}
-        url = 'https://hapdwebhook.herokuapp.com/webhook'
-        r = requests.post(url, data=data, headers=headers)
-        #r.text contains the dictionary/json file with the response from webhook
-        print(r.text)
+        if(str(dob) == ''):
+            dob_error = 2
+            status = 0
+        if(self.gender == None):
+            gender_error = 2
+            status = 0 
+        if(status == 1):
+            data = {'name': name, 'age': age, 'gender': self.gender, 'dob': dob, 'pin': pin}
+            data = json.dumps(data)
+            headers = {'Authorization' : '', 'Accept' : 'application/json', 'Content-Type' : 'application/json'}
+            url = 'https://hapdwebhook.herokuapp.com/webhook'
+            r = requests.post(url, data=data, headers=headers)
+            #r.text contains the dictionary/json file with the response from webhook
+            print(r.text)
     
 class HomePage(Screen):
     def __init__(self, **kwargs):
