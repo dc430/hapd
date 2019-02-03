@@ -1,0 +1,39 @@
+<NavScreen>:
+    name: 'NavScreen'
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: 'background-3.jpg'
+    FloatLayout:
+        Image:
+            source: 'logo-250.png'
+            size_hint: .2, .5
+            pos_hint: {'center_x': 0.5, 'center_y': 0.8}
+        Label:
+            text: 'Welcome'
+            color: [0.65,0.65,0.65,1]
+            pos_hint: {'center_x': 0.5, 'center_y': 0.6}
+            font_size: 0.5*self.height
+            size_hint: 0.3, 0.1
+        Button:
+            on_release: app.root.current = 'NewUser'
+            size_hint: 0.3, 0.1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.4}
+            text: 'New User'
+            font_size: 0.5*self.height
+            background_color: (0.5,0.5,0.9,0.3)
+
+        Button:
+            on_press: root.manager.current = 'ExistingUser'
+            size_hint: 0.3, 0.1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.2}
+            text: 'Exisiting User'
+            font_size: 0.5*self.height
+            background_color: (0.5,0.5,0.9,0.3)
+        
+        Label:
+            text: "'"+root.quote+"'"
+            pos_hint: {'center_x': 0.5, 'center_y': 0.075}
+            font_size: 0.2*self.height
+            size_hint: 0.3, 0.1

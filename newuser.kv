@@ -1,0 +1,99 @@
+<NewUser>:
+    name: 'NewUser'
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: '4.jpg'
+    
+    FloatLayout:
+
+        Label:
+            text: 'Fill the details to join'
+            size_hint: 0.3, 0.1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.9}
+            font_size: 0.4*self.height
+
+        TextInput:
+            id: name_newUser
+            hint_text: 'Name'
+            size_hint: 0.3, 0.06
+            multiline: False
+            pos_hint: {'center_x': 0.5, 'center_y': 0.8}
+            font_size: 0.4*self.height
+
+        
+        TextInput:
+            id: age_newUser
+            hint_text: 'Age'
+            size_hint: 0.3, 0.06
+            multiline: False
+            pos_hint: {'center_x': 0.5, 'center_y': 0.7}
+            font_size: 0.4*self.height
+
+
+        Label:
+            id: erAge
+            text: '.'
+            size_hint: 0.3, 0.06
+            font_size: 0.4*self.height
+    
+            
+        GridLayout:
+            cols: 2
+            spacing: '8dp'
+            size_hint: .3, None
+            pos_hint: {'center_x': 0.5, 'center_y': 0.6}
+            height: self.minimum_height
+            ToggleButton:
+                size_hint_y: None
+                on_press: app.root.ids.api.gender = 'Male'
+                height: '30dp'
+                text: 'Male'
+                group: 'g1'
+            ToggleButton:
+                size_hint_y: None
+                on_press: app.root.ids.api.gender = 'Female'
+                height: '30dp'
+                text: 'Female'
+                group: 'g1'
+        
+        TextInput:
+            id: dob_newUser
+            hint_text: 'Date of Birth'
+            size_hint: 0.3, 0.06
+            multiline: False
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+            font_size: 0.4*self.height
+
+        TextInput:
+            id: pin_newUser
+            hint_text: 'PIN'
+            allow_copy: False
+            size_hint: 0.3, 0.06
+            password: True
+            multiline: False
+            pos_hint: {'center_x': 0.5, 'center_y': 0.4}
+            font_size: 0.4*self.height
+        
+        Label:
+            text: 'Age must be in numeric form' if(root.aE == 1) else ' '
+            pos_hint: {'center_x': 0.5, 'center_y': 0.4}
+
+        Button:
+            text: 'Submit'
+            size_hint: 0.3, 0.1  
+            pos_hint: {'center_x': 0.5, 'center_y': 0.3}  
+            font_size: 0.4*self.height
+            on_press: app.root.ids.api.sendDataToRealTimeDb(name_newUser.text, age_newUser.text, dob_newUser.text, pin_newUser.text)
+            on_release: 
+                root.update_status()
+                if(root.status == 1):  root.manager.current = 'HomePage'
+                else: root.manager.current = 'NewUser'
+
+        Button:
+            pos_hint: {'center_x': 0.5, 'center_y': 0.1}
+            on_press: root.manager.current = 'NavScreen'
+            size_hint: 0.1, 0.1
+            background_color: (1,1,1,0.5)
+            text: 'Back'
