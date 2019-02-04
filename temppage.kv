@@ -1,0 +1,38 @@
+<tempPage>:
+    name:'tempPage'
+    #canvas.before:
+    #    Rectangle:
+    #        pos: self.pos
+    #        size: self.size
+    #        source: 'images/background-3.jpg'
+    FloatLayout:
+
+        Label:
+            text: 'Your Patient ID is ' + root.pid
+            pos_hint: {'center_x': 0.5, 'center_y': 0.7}
+            size_hint: 0.3, 0.1
+            color: (1,0.866,0.066,1)
+            font_size: 0.6*self.height
+        
+        Label:
+            text: "Please note down this id for login reference."
+            pos_hint: {'center_x': 0.5, 'center_y': 0.6}
+            size_hint: 0.3, 0.1
+            color: (1,0.866,0.066,1)
+            font_size: 0.4*self.height
+
+        Button:
+            pos_hint: {'center_x': 0.5, 'center_y': 0.4}
+            on_press: root.manager.current = 'existingUser'
+            size_hint: 0.3, 0.1
+            text: "Login"
+            font_size: 0.5*self.height
+
+        Button:
+            pos_hint: {'center_x': 0.5, 'center_y': 0.1}
+            on_press: root.manager.current = 'NavScreen'
+            size_hint: 0.1, 0.1
+            Image:
+                source: 'images/1.png'
+                center_x: self.parent.center_x
+                center_y: self.parent.center_y

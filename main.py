@@ -124,9 +124,11 @@ class api(Screen):
             #r.text contains the dictionary/json file with the response from webhook
             print(r.text)
     
-class HomePage(Screen):
+class tempPage(Screen):
     def __init__(self, **kwargs):
-        super(HomePage, self).__init__(**kwargs)
+        super(tempPage, self).__init__(**kwargs)
+        with open('data.json', 'r') as f:
+            self.pid = str(json.load(f)["currentPID"])
         
     
 class UserScreenManager(ScreenManager):
