@@ -8,8 +8,8 @@ from kivy.uix.textinput import TextInput
 from kivy.properties import StringProperty, ObjectProperty
 from kivy.config import Config
 Config.set('graphics', 'resizable', False)
-#Config.set('graphics', 'width', '700')
-#Config.set('graphics', 'height', '700')
+Config.set('graphics', 'width', '700')
+Config.set('graphics', 'height', '700')
 #For heroku
 from kivy.network.urlrequest import UrlRequest
 import urllib
@@ -66,12 +66,14 @@ class api(Screen):
         super(api, self).__init__(**kwargs)
         self.gender = None
         
-    def sendDataToRealTimeDb(self, name, age, dob, pin):
+    def sendDataToRealTimeDb(self, name, age, dob, pin, mB, fB):
         global active, status, age_error, name_error, pin_error, dob_error, gender_error
-        age_error = name_error = pin_error = 0
+        age_error = name_error = pin_error = gender_error = dob_error = 0
         status = 1
         active = 1
         temp = str(age)
+        if(mB.status == False and fB.status == False):
+            self.gender = None
         if (temp.isnumeric() == False):
             age_error = 1
             status = 0
@@ -134,7 +136,7 @@ class tempPage(Screen):
 class UserScreenManager(ScreenManager):
     pass
 
-frontEnd = Builder.load_file('style.kv')
+frontEnd = Builder.load_file('kv/style.kv')
 
 class Main(App):
     def build(self):

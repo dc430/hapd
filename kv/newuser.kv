@@ -4,29 +4,28 @@
         Rectangle:
             pos: self.pos
             size: self.size
-            source: 'images/background.jpg'
-    
+            source: 'images/background-4.jpg'
+
     FloatLayout:
 
-        Label:
-            text: 'Fill the details to join'
-            size_hint: 0.3, 0.1
-            pos_hint: {'center_x': 0.5, 'center_y': 0.95}
-            font_size: 0.4*self.height
+        Image:
+            source: 'images/icon-patient-4.png'
+            size: 100, 100
+            pos_hint: {'center_x': 0.5, 'center_y': 0.89}
 
         TextInput:
             id: name_newUser
             hint_text: 'Name'
             size_hint: 0.3, 0.06
             multiline: False
-            pos_hint: {'center_x': 0.5, 'center_y': 0.85}
+            pos_hint: {'center_x': 0.5, 'center_y': 0.75}
             font_size: 0.4*self.height
 
         Label:
             id: name_error
             text: ''
             color: [0.86,0.078, 0.235,0.8]
-            pos_hint: {'center_x': 0.5, 'center_y': 0.80}
+            pos_hint: {'center_x': 0.5, 'center_y': 0.70}
             size_hint: 0.2, 0.06
             font_size: 0.37*self.height
         
@@ -35,14 +34,14 @@
             hint_text: 'Age'
             size_hint: 0.3, 0.06
             multiline: False
-            pos_hint: {'center_x': 0.5, 'center_y': 0.75}
+            pos_hint: {'center_x': 0.5, 'center_y': 0.65}
             font_size: 0.4*self.height
 
         Label:
             id: age_error
             text: ''
             color: [0.86,0.078, 0.235,0.8]
-            pos_hint: {'center_x': 0.5, 'center_y': 0.70}
+            pos_hint: {'center_x': 0.5, 'center_y': 0.60}
             size_hint: 0.2, 0.06
             font_size: 0.37*self.height
             
@@ -50,17 +49,23 @@
             cols: 2
             spacing: '8dp'
             size_hint: .3, None
-            pos_hint: {'center_x': 0.5, 'center_y': 0.65}
+            pos_hint: {'center_x': 0.5, 'center_y': 0.55}
             height: self.minimum_height
             ToggleButton:
+                id: male_button
                 size_hint_y: None
+                status: False
                 on_press: app.root.ids.api.gender = 'Male'
+                on_release: self.status = not(self.status)
                 height: '30dp'
                 text: 'Male'
                 group: 'g1'
             ToggleButton:
+                id: female_button
                 size_hint_y: None
+                status: False
                 on_press: app.root.ids.api.gender = 'Female'
+                on_release: self.status = not(self.status)
                 height: '30dp'
                 text: 'Female'
                 group: 'g1'
@@ -69,7 +74,7 @@
             id: gender_error
             text: ''
             color: [0.86,0.078, 0.235,0.8]
-            pos_hint: {'center_x': 0.5, 'center_y': 0.60}
+            pos_hint: {'center_x': 0.5, 'center_y': 0.50}
             size_hint: 0.2, 0.06
             font_size: 0.37*self.height
 
@@ -78,14 +83,14 @@
             hint_text: 'Date of Birth'
             size_hint: 0.3, 0.06
             multiline: False
-            pos_hint: {'center_x': 0.5, 'center_y': 0.55}
+            pos_hint: {'center_x': 0.5, 'center_y': 0.45}
             font_size: 0.4*self.height
 
         Label:
             id: dob_error
             text: ''
             color: [0.86,0.078, 0.235,0.8]
-            pos_hint: {'center_x': 0.5, 'center_y': 0.50}
+            pos_hint: {'center_x': 0.5, 'center_y': 0.40}
             size_hint: 0.2, 0.06
             font_size: 0.37*self.height
 
@@ -96,24 +101,25 @@
             size_hint: 0.3, 0.06
             password: True
             multiline: False
-            pos_hint: {'center_x': 0.5, 'center_y': 0.45}
+            pos_hint: {'center_x': 0.5, 'center_y': 0.35}
             font_size: 0.4*self.height
 
         Label:
             id: pin_error
             text: ''
             color: [0.86,0.078, 0.235,0.8]
-            pos_hint: {'center_x': 0.5, 'center_y': 0.40}
+            pos_hint: {'center_x': 0.5, 'center_y': 0.30}
             size_hint: 0.2, 0.06
             font_size: 0.37*self.height
         
         Button:
-            text: 'Submit'
-            size_hint: 0.3, 0.1  
-            pos_hint: {'center_x': 0.5, 'center_y': 0.3}  
+            text: 'Join'
+            size_hint: 0.2, 0.085  
+            pos_hint: {'center_x': 0.5, 'center_y': 0.20}  
             font_size: 0.4*self.height
-            background_color: (0,0,0,0)
-            on_press: app.root.ids.api.sendDataToRealTimeDb(name_newUser.text, age_newUser.text, dob_newUser.text, pin_newUser.text)
+            background_color: [0.466,0.705,0.976, 0.8]
+            color: (1,1,1,1)
+            on_press: app.root.ids.api.sendDataToRealTimeDb(name_newUser.text, age_newUser.text, dob_newUser.text, pin_newUser.text, male_button, female_button)
             on_release: 
                 root.update_status()
                 if(root.aE == 1): age_error.text = 'Age must be in numeric form.'
@@ -128,13 +134,13 @@
                 elif(root.pE == 2): pin_error.text =  "This field can't be empty."
                 else: pin_error.text = ''
                 if(root.gE == 2): gender_error.text = "You must choose one choice."
-                else: gender_error.text = ''
+                if(male_button.status == True or female_button.status == True): gender_error.text = ''
                 if(root.status == 1):  root.manager.current = 'tempPage'
                 else: root.manager.current = 'NewUser'
 
         Button:
             pos_hint: {'center_x': 0.5, 'center_y': 0.1}
             on_press: root.manager.current = 'NavScreen'
-            size_hint: 0.1, 0.1
-            background_color: (1,1,1,0)
+            size_hint: 0.1, 0.075
+            background_color: [0.65,0.65,0.65,0.5]
             text: 'Back'
