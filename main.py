@@ -29,9 +29,9 @@ dob_error = 0
 class NavScreen(Screen):
     def __init__(self, **kwargs):
         super(NavScreen, self).__init__(**kwargs)
-        with open('quotes.json') as f:
+        with open('data.json') as f:
             data = json.load(f)
-        self.quote = str(data[str(random.randint(1,5))])
+        self.quote = str(data["quotes"][str(random.randint(1,5))])
         
 
 class NewUser(Screen):
@@ -94,11 +94,33 @@ class api(Screen):
             gender_error = 2
             status = 0 
         if(status == 1):
-            data = {'name': name, 'age': age, 'gender': self.gender, 'dob': dob, 'pin': pin}
+            with open('data.json', "r") as f:
+                d = json.load(f)
+            data = {
+                'name': name, 
+                'age': age, 
+                'gender': self.gender, 
+                'dob': dob, 
+                'pin': pin, 
+                'patientID': d["currentPID"]
+            }
             data = json.dumps(data)
             headers = {'Authorization' : '', 'Accept' : 'application/json', 'Content-Type' : 'application/json'}
             url = 'https://hapdwebhook.herokuapp.com/webhook'
-            r = requests.post(url, data=data, headers=headers)
+            try:
+                r = requests.post(url, data=data, headers=headers)
+                s = d["currentPID"]
+                t = ""
+                for i in range(1,len(s)):
+                    t += s[i]
+                t = int(t)
+                t += 1
+                d["currentPID"] = "P"+str(t)
+                with open('data.json', "w") as f:
+                    json.dump(d, f, indent=4)
+
+            except:
+                print("Couldn't send to webhook")
             #r.text contains the dictionary/json file with the response from webhook
             print(r.text)
     
@@ -106,10 +128,6 @@ class HomePage(Screen):
     def __init__(self, **kwargs):
         super(HomePage, self).__init__(**kwargs)
         
-
-    
-
-
     
 class UserScreenManager(ScreenManager):
     pass
