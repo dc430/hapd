@@ -24,6 +24,7 @@ gender_error = 0
 name_error = 0
 pin_error = 0
 dob_error = 0
+currentPID = 0
 #----------------------- End --------------------------------#
 
 class NavScreen(Screen):
@@ -58,8 +59,18 @@ class ExistingUser(Screen):
     def __init__(self, **kwargs):
         super(ExistingUser, self).__init__(**kwargs)
     
-    def sendId(self, id, pin):
-        print(id+' '+pin)
+    def checkCredentials(self, pId, pin):
+        global currentPID
+        data = {
+            "pId": pId,
+            "pin": pin
+        }
+        data = json.dumps(data)
+        headers = {'Authorization' : '', 'Accept' : 'application/json', 'Content-Type' : 'application/json'}
+        url = 'https://api-hapd.herokuapp.com/checkLogin'
+        r = requests.post(url, data=data, headers=headers)
+        print(r.text, type(r.text))
+
 
 class api(Screen):
     def __init__(self, **kwargs):
@@ -96,41 +107,26 @@ class api(Screen):
             gender_error = 2
             status = 0 
         if(status == 1):
-            with open('data.json', "r") as f:
-                d = json.load(f)
             data = {
                 'name': name, 
                 'age': age, 
                 'gender': self.gender, 
                 'dob': dob, 
                 'pin': pin, 
-                'patientID': d["currentPID"]
             }
             data = json.dumps(data)
             headers = {'Authorization' : '', 'Accept' : 'application/json', 'Content-Type' : 'application/json'}
-            url = 'https://hapdwebhook.herokuapp.com/webhook'
+            url = 'https://api-hapd.herokuapp.com/addNewUser'
             try:
                 r = requests.post(url, data=data, headers=headers)
-                s = d["currentPID"]
-                t = ""
-                for i in range(1,len(s)):
-                    t += s[i]
-                t = int(t)
-                t += 1
-                d["currentPID"] = "P"+str(t)
-                with open('data.json', "w") as f:
-                    json.dump(d, f, indent=4)
-
             except:
                 print("Couldn't send to webhook")
-            #r.text contains the dictionary/json file with the response from webhook
-            print(r.text)
+            print("Data from api:\n", r.text)
     
 class tempPage(Screen):
     def __init__(self, **kwargs):
         super(tempPage, self).__init__(**kwargs)
-        with open('data.json', 'r') as f:
-            self.pid = str(json.load(f)["currentPID"])
+        self.pId = "P1"
         
     
 class UserScreenManager(ScreenManager):
