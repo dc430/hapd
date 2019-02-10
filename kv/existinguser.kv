@@ -41,6 +41,14 @@
             allow_copy: False
             border: (3,3,3,3)
 
+        Label:
+            id: login_error
+            text: ''
+            color: [0.86,0.078, 0.235,0.8]
+            pos_hint: {'center_x': 0.5, 'center_y': 0.35}
+            size_hint: 0.2, 0.06
+            font_size: 0.37*self.height
+
         Button:
             text: 'Log In'
             size_hint: 0.3, 0.075
@@ -48,7 +56,9 @@
             font_size: 0.4*self.height
             background_color: [0.466,0.705,0.976, 0.8]
             color: (1,1,1,1)
-            #on_release: root.manager.current = 'HomePage'
+            on_release:
+                if(root.checkCredentials(pId.text, pin.text)==True): root.manager.current = 'HomePage'
+                else: login_error.text = "Incorrect Id or PIN."
         
         Button:
             text: 'Forgot Patient ID?'

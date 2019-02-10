@@ -1,5 +1,6 @@
 <NewUser>:
     name: 'NewUser'
+    popup: popup.__self__
     canvas.before:
         Rectangle:
             pos: self.pos
@@ -7,7 +8,7 @@
             source: 'images/background-4.jpg'
 
     FloatLayout:
-
+        id: f
         Image:
             source: 'images/icon-patient-4.png'
             size: 100, 100
@@ -55,7 +56,7 @@
                 id: male_button
                 size_hint_y: None
                 status: False
-                on_press: app.root.ids.api.gender = 'Male'
+                on_press: root.gender = 'Male'
                 on_release: self.status = not(self.status)
                 height: '30dp'
                 text: 'Male'
@@ -64,7 +65,7 @@
                 id: female_button
                 size_hint_y: None
                 status: False
-                on_press: app.root.ids.api.gender = 'Female'
+                on_press: root.gender = 'Female'
                 on_release: self.status = not(self.status)
                 height: '30dp'
                 text: 'Female'
@@ -112,16 +113,32 @@
             size_hint: 0.2, 0.06
             font_size: 0.37*self.height
         
+        Popup:
+            id: popup
+            title: ''
+            on_parent:
+                if self.parent == f: self.parent.remove_widget(self)
+            Button:
+                id: popup_text
+                text: ''
+                pos_hint: {'center_x': 0.5, 'center_y': 0.7}
+                on_release: root.manager.current = 'ExistingUser'
+                size_hint: 0.3, 0.1
+                color: (1,0.866,0.066,1)
+                font_size: 0.6*self.height
+                
+
         Button:
             text: 'Join'
-            size_hint: 0.2, 0.085  
+            size_hint: 0.2, 0.070  
             pos_hint: {'center_x': 0.5, 'center_y': 0.20}  
             font_size: 0.4*self.height
             background_color: [0.466,0.705,0.976, 0.8]
             color: (1,1,1,1)
-            on_press: app.root.ids.api.sendDataToRealTimeDb(name_newUser.text, age_newUser.text, dob_newUser.text, pin_newUser.text, male_button, female_button)
+            on_press: root.sendDataToRealTimeDb(name_newUser.text, age_newUser.text, dob_newUser.text, pin_newUser.text, male_button, female_button)
             on_release: 
                 root.update_status()
+                popup_text.text = 'Your Patient ID is ' + str(root.p) + "\nPlease note down this id for login reference.\nClick anywhere to login."
                 if(root.aE == 1): age_error.text = 'Age must be in numeric form.'
                 elif(root.aE == 2): age_error.text = "This field can't be empty."
                 else: age_error.text = ''
@@ -135,12 +152,15 @@
                 else: pin_error.text = ''
                 if(root.gE == 2): gender_error.text = "You must choose one choice."
                 if(male_button.status == True or female_button.status == True): gender_error.text = ''
-                if(root.status == 1):  root.manager.current = 'tempPage'
+                if(root.status == 1):  root.popup.open()
                 else: root.manager.current = 'NewUser'
 
         Button:
             pos_hint: {'center_x': 0.5, 'center_y': 0.1}
             on_press: root.manager.current = 'NavScreen'
-            size_hint: 0.1, 0.075
+            size_hint: 0.1, 0.060
             background_color: [0.65,0.65,0.65,0.5]
             text: 'Back'
+
+        
+            

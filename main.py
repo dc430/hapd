@@ -1,3 +1,6 @@
+'''
+MAJOR PROJECT 2019 - CSE D (203,221,246,249)
+'''
 import kivy
 from kivy.app import App
 from kivy.uix.label import Label
@@ -9,7 +12,7 @@ from kivy.properties import StringProperty, ObjectProperty
 from kivy.config import Config
 Config.set('graphics', 'resizable', False)
 Config.set('graphics', 'width', '700')
-Config.set('graphics', 'height', '700')
+Config.set('graphics', 'height', '750')
 #For heroku
 from kivy.network.urlrequest import UrlRequest
 import urllib
@@ -24,7 +27,9 @@ gender_error = 0
 name_error = 0
 pin_error = 0
 dob_error = 0
-currentPID = 0
+currentPID = ''
+#---------------------- API Variables -----------------------#
+URL = "https://smart-catfish-80.localtunnel.me"
 #----------------------- End --------------------------------#
 
 class NavScreen(Screen):
@@ -44,7 +49,9 @@ class NewUser(Screen):
         self.aE = age_error
         self.dE = dob_error
         self.gE = gender_error
-        self.temp = str('Hello')
+        self.temp = str('')
+        self.gender = None
+        self.p = currentPID
 
     def update_status(self):
         self.status = status
@@ -53,32 +60,11 @@ class NewUser(Screen):
         self.aE = age_error
         self.dE = dob_error
         self.gE = gender_error
-
-
-class ExistingUser(Screen):
-    def __init__(self, **kwargs):
-        super(ExistingUser, self).__init__(**kwargs)
+        #self.p = currentPID
     
-    def checkCredentials(self, pId, pin):
-        global currentPID
-        data = {
-            "pId": pId,
-            "pin": pin
-        }
-        data = json.dumps(data)
-        headers = {'Authorization' : '', 'Accept' : 'application/json', 'Content-Type' : 'application/json'}
-        url = 'https://api-hapd.herokuapp.com/checkLogin'
-        r = requests.post(url, data=data, headers=headers)
-        print(r.text, type(r.text))
-
-
-class api(Screen):
-    def __init__(self, **kwargs):
-        super(api, self).__init__(**kwargs)
-        self.gender = None
-        
     def sendDataToRealTimeDb(self, name, age, dob, pin, mB, fB):
         global active, status, age_error, name_error, pin_error, dob_error, gender_error
+        global currentPID
         age_error = name_error = pin_error = gender_error = dob_error = 0
         status = 1
         active = 1
@@ -108,27 +94,51 @@ class api(Screen):
             status = 0 
         if(status == 1):
             data = {
-                'name': name, 
-                'age': age, 
-                'gender': self.gender, 
-                'dob': dob, 
-                'pin': pin, 
+                "name": name, 
+                "age": age, 
+                "gender": self.gender, 
+                "dob": dob, 
+                "pin": pin, 
             }
             data = json.dumps(data)
             headers = {'Authorization' : '', 'Accept' : 'application/json', 'Content-Type' : 'application/json'}
-            url = 'https://api-hapd.herokuapp.com/addNewUser'
+            url = URL+'/addUser'
             try:
                 r = requests.post(url, data=data, headers=headers)
+                self.p = (json.loads(r.text))["PID"]
+                print(self.p)
             except:
                 print("Couldn't send to webhook")
             print("Data from api:\n", r.text)
-    
-class tempPage(Screen):
+
+
+class ExistingUser(Screen):
     def __init__(self, **kwargs):
-        super(tempPage, self).__init__(**kwargs)
-        self.pId = "P1"
-        
+        super(ExistingUser, self).__init__(**kwargs)
     
+    def checkCredentials(self, pId, pin):
+        global currentPID
+        data = {
+            "pId": pId,
+            "pin": pin
+        }
+        data = json.dumps(data)
+        headers = {'Authorization' : '', 'Accept' : 'application/json', 'Content-Type' : 'application/json'}
+        url = URL+'/checkLogin'
+        r = requests.post(url, data=data, headers=headers)
+        temp = json.loads(r.text)
+        if(temp["fulfillmentText"] == "True"):
+            return True
+        else:
+            return False
+    
+    
+class HomePage(Screen):
+    pass
+
+class WhoAmI(Screen):
+    pass
+
 class UserScreenManager(ScreenManager):
     pass
 
